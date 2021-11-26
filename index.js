@@ -1,9 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { getNewProjects } = require('./new-projects');
-const { addNewProjects } = require('./add-new-projects');
-const { fetchProjects } = require('./fetch');
-const { filterProjects } = require('./filter');
+const { GithubHelper } = require('./github_helper');
 
 async function run() {
   try {
@@ -13,20 +11,13 @@ async function run() {
     const octokit = github.getOctokit(token);
 
     const newProjects = getNewProjects(currentProjects, targetProjects);
-    const allProjects = await fetchProjects({
+    const githubHelper = new GithubHelper({
       client: octokit,
-      repo: github.context.repo,
+      context: github.context,
     });
-    const columnIds = filterProjects({
+    await githubHelper.assignToProjects({
       columnName: core.getInput('column-name', { required: true }),
-      allProjects,
-      relevantProjects: newProjects,
-    });
-
-    await addNewProjects({
-      client: octokit,
-      columnIds,
-      pullRequestId: github.context.payload.pull_request.id,
+      newProjects,
     });
   } catch (error) {
     core.setFailed(error.message);
