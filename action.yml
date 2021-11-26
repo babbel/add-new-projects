@@ -1,0 +1,22 @@
+name: Add new projects
+description: |
+  Determine new projects and add them
+
+inputs:
+  column-name:
+    description: Name of column
+    required: true
+  current-projects:
+    description: List of projects the given pull request is assigned to
+    required: true
+  github-token:
+    description: The GitHub token used to create an authenticated client
+    default: ${{ github.token }}
+    required: false
+  target-projects:
+    description: List of projects the given pull request should be assigned to
+    required: true
+
+runs:
+  using: node12
+  main: dist/index.js
