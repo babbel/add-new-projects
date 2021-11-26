@@ -1,6 +1,6 @@
 const nock = require('nock');
 const github = require('@actions/github');
-const { GithubHelper } = require('../github_helper');
+const { GithubHelper } = require('../github-helper');
 const page1 = require('./fetch-page1.json');
 const page2 = require('./fetch-page2.json');
 

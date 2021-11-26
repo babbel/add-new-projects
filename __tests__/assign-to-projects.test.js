@@ -1,5 +1,5 @@
 const github = require('@actions/github');
-const { GithubHelper } = require('../github_helper');
+const { GithubHelper } = require('../github-helper');
 const { data: { repository: { projects: { edges: page1 } } } } = require('./fetch-page1.json');
 const { data: { repository: { projects: { edges: page2 } } } } = require('./fetch-page2.json');
 

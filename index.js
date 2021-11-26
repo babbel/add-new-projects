@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { getNewProjects } = require('./new-projects');
-const { GithubHelper } = require('./github_helper');
+const { GithubHelper } = require('./github-helper');
 
 async function run() {
   try {

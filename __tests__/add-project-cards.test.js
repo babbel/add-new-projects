@@ -1,6 +1,6 @@
 const nock = require('nock');
 const github = require('@actions/github');
-const { GithubHelper } = require('../github_helper');
+const { GithubHelper } = require('../github-helper');
 
 const githubHelper = new GithubHelper({
   client: github.getOctokit('token'),
