@@ -4,11 +4,11 @@ exports.GithubHelper = class {
     this.context = context;
   }
 
-  async assignToProjects({ columnName, newProjects }) {
+  async assignToProjects({ columnName, newProjectNames }) {
     const allProjects = await this.fetchProjects();
     const columnIds = allProjects
       .map((project) => project.node) // remove top-level "node" attribute
-      .filter(({ name: projectName }) => newProjects.includes(projectName))
+      .filter(({ name: projectName }) => newProjectNames.includes(projectName))
       .map(({ columns: { edges: columns } }) => (
         columns.find((column) => column.node.name === columnName)
           .node
