@@ -4,6 +4,22 @@ exports.GithubHelper = class {
     this.context = context;
   }
 
+  async assignToProjects({ columnName, newProjects }) {
+    const allProjects = await this.fetchProjects();
+    const columnIds = allProjects
+      .filter((p) => newProjects.includes(p.node.name))
+      .map((p) => (
+        p
+          .node
+          .columns
+          .edges
+          .find((column) => column.node.name === columnName)
+          .node
+          .databaseId
+      ));
+    await this.addProjectCards({ columnIds });
+  }
+
   async fetchProjects({ results, cursor } = { results: [] }) {
     const query = `
       query($cursor: String) {
