@@ -7,13 +7,10 @@ exports.GithubHelper = class {
   async assignToProjects({ columnName, newProjects }) {
     const allProjects = await this.fetchProjects();
     const columnIds = allProjects
-      .filter((p) => newProjects.includes(p.node.name))
-      .map((p) => (
-        p
-          .node
-          .columns
-          .edges
-          .find((column) => column.node.name === columnName)
+      .map((project) => project.node) // remove top-level "node" attribute
+      .filter(({ name: projectName }) => newProjects.includes(projectName))
+      .map(({ columns: { edges: columns } }) => (
+        columns.find((column) => column.node.name === columnName)
           .node
           .databaseId
       ));
