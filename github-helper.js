@@ -18,6 +18,8 @@ exports.GithubHelper = class {
   }
 
   async fetchProjects({ results, cursor } = { results: [] }) {
+    // A limit is required, and 10 or fewer columns per project board seems reasonable
+    const maxColumns = 10;
     const query = `
       query($cursor: String) {
         repository(owner: "${this.context.repo.owner}", name: "${this.context.repo.repo}") {
@@ -29,7 +31,7 @@ exports.GithubHelper = class {
             edges {
               node {
                 name
-                columns(first: 10) {
+                columns(first: ${maxColumns}) {
                   edges {
                     node {
                       databaseId
