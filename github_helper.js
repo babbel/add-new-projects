@@ -39,4 +39,15 @@ exports.GithubHelper = class {
 
     return results;
   }
+
+  async addProjectCards({ columnIds }) {
+    for (const columnId of columnIds) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.client.rest.projects.createCard({
+        column_id: columnId,
+        content_id: this.context.payload.pull_request.id,
+        content_type: 'PullRequest',
+      });
+    }
+  }
 };

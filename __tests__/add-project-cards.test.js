@@ -1,6 +1,11 @@
 const nock = require('nock');
 const github = require('@actions/github');
-const { addNewProjects } = require('../add-new-projects');
+const { GithubHelper } = require('../github_helper');
+
+const githubHelper = new GithubHelper({
+  client: github.getOctokit('token'),
+  context: { payload: { pull_request: { id: 987 } } },
+});
 
 test('adds all projects successfully', async () => {
   nock('https://api.github.com')
@@ -10,11 +15,7 @@ test('adds all projects successfully', async () => {
     .reply(201);
 
   expect.assertions(1);
-  await addNewProjects({
-    client: github.getOctokit('token'),
-    columnIds: [123, 456],
-    pullRequestId: 987,
-  });
+  await githubHelper.addProjectCards({ columnIds: [123, 456] });
   expect(nock.isDone()).toBe(true);
 });
 
@@ -25,9 +26,5 @@ test('rejects if at least one of the requests fail', () => {
     .post('/projects/columns/456/cards', { content_type: 'PullRequest', content_id: 987 })
     .reply(422, 'Wrong');
 
-  expect(addNewProjects({
-    client: github.getOctokit('token'),
-    columnIds: [123, 456],
-    pullRequestId: 987,
-  })).rejects.toThrow('Wrong');
+  expect(githubHelper.addProjectCards({ columnIds: [123, 456] })).rejects.toThrow('Wrong');
 });
