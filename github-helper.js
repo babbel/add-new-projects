@@ -17,7 +17,7 @@ exports.GithubHelper = class {
     await this.addProjectCards({ columnIds });
   }
 
-  async fetchProjects({ results, cursor } = { results: [] }) {
+  async fetchProjects({ cursor } = {}) {
     // A limit is required, and 10 or fewer columns per project board seems reasonable
     const maxColumns = 10;
     const query = `
@@ -46,10 +46,12 @@ exports.GithubHelper = class {
       }
     `;
     const { repository: { projects } } = await this.client.graphql(query, { cursor });
+    const results = [];
     results.push(...projects.edges);
 
     if (projects.pageInfo.hasNextPage) {
-      await this.fetchProjects({ results, cursor: projects.pageInfo.endCursor });
+      const nextResults = await this.fetchProjects({ cursor: projects.pageInfo.endCursor });
+      results.push(...nextResults);
     }
 
     return results;
