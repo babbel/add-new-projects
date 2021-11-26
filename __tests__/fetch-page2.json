@@ -1,0 +1,41 @@
+{
+  "data": {
+    "repository": {
+      "projects": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "bm8gbmV3IHBhZ2UK"
+        },
+        "edges": [
+          {
+            "node": {
+              "name": "home",
+              "columns": {
+                "edges": [
+                  {
+                    "node": {
+                      "databaseId": 1234,
+                      "name": "TODO"
+                    }
+                  },
+                  {
+                    "node": {
+                      "databaseId": 4567,
+                      "name": "Applying"
+                    }
+                  },
+                  {
+                    "node": {
+                      "databaseId": 7890,
+                      "name": "DONE"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,19 +1,36 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const { getNewProjects } = require('./new-projects');
+const { addNewProjects } = require('./add-new-projects');
+const { fetchProjects } = require('./fetch');
+const { filterProjects } = require('./filter');
 
 async function run() {
   try {
-    // `who-to-greet` input defined in action metadata file
-    const nameToGreet = core.getInput('who-to-greet');
-    console.log(`Hello ${nameToGreet}!`);
-    const time = (new Date()).toTimeString();
-    core.setOutput("time", time);
-    // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log(`The event payload: ${payload}`);
+    const currentProjects = JSON.parse(core.getInput('current-projects', { required: true }));
+    const targetProjects = JSON.parse(core.getInput('target-projects', { required: true }));
+    const token = core.getInput('github-token', { required: true });
+    const octokit = github.getOctokit(token);
+
+    const newProjects = getNewProjects(currentProjects, targetProjects);
+    const allProjects = await fetchProjects({
+      client: octokit,
+      repo: github.context.repo,
+    });
+    const columnIds = filterProjects({
+      columnName: core.getInput('column-name', { required: true }),
+      allProjects,
+      relevantProjects: newProjects,
+    });
+
+    await addNewProjects({
+      client: octokit,
+      columnIds,
+      pullRequestId: github.context.payload.pull_request.id,
+    });
   } catch (error) {
     core.setFailed(error.message);
   }
 }
 
-run()
+run();
