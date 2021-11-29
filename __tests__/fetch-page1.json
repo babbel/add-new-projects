@@ -1,0 +1,68 @@
+{
+  "data": {
+    "repository": {
+      "projects": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "endCursor": "Y3Vyc29yOnYyOpHOALVY2A=="
+        },
+        "edges": [
+          {
+            "node": {
+              "name": "credentials",
+              "columns": {
+                "edges": [
+                  {
+                    "node": {
+                      "databaseId": 123,
+                      "name": "TODO"
+                    }
+                  },
+                  {
+                    "node": {
+                      "databaseId": 456,
+                      "name": "Applying"
+                    }
+                  },
+                  {
+                    "node": {
+                      "databaseId": 789,
+                      "name": "DONE"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "node": {
+              "name": "client-info",
+              "columns": {
+                "edges": [
+                  {
+                    "node": {
+                      "databaseId": 321,
+                      "name": "TODO"
+                    }
+                  },
+                  {
+                    "node": {
+                      "databaseId": 654,
+                      "name": "Applying"
+                    }
+                  },
+                  {
+                    "node": {
+                      "databaseId": 987,
+                      "name": "DONE"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

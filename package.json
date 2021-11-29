@@ -5,14 +5,21 @@
   "main": "index.js",
   "scripts": {
     "build": "ncc build index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "test": "jest"
   },
   "dependencies": {
     "@actions/core": "*",
     "@actions/github": "*"
   },
   "devDependencies": {
-    "@vercel/ncc": "*"
+    "@babel/eslint-parser": "*",
+    "@vercel/ncc": "*",
+    "eslint": "*",
+    "eslint-config-airbnb-base": "*",
+    "eslint-plugin-import": "*",
+    "jest": "*",
+    "nock": "*"
   },
   "keywords": [],
   "author": "",
