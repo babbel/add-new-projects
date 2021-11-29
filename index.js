@@ -1,19 +1,27 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const { getNewProjects } = require('./new-projects');
+const { GithubHelper } = require('./github-helper');
 
 async function run() {
   try {
-    // `who-to-greet` input defined in action metadata file
-    const nameToGreet = core.getInput('who-to-greet');
-    console.log(`Hello ${nameToGreet}!`);
-    const time = (new Date()).toTimeString();
-    core.setOutput("time", time);
-    // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log(`The event payload: ${payload}`);
+    const currentProjects = JSON.parse(core.getInput('current-projects', { required: true }));
+    const targetProjects = JSON.parse(core.getInput('target-projects', { required: true }));
+    const token = core.getInput('github-token', { required: true });
+    const octokit = github.getOctokit(token);
+
+    const newProjects = getNewProjects(currentProjects, targetProjects);
+    const githubHelper = new GithubHelper({
+      client: octokit,
+      context: github.context,
+    });
+    await githubHelper.assignToProjects({
+      columnName: core.getInput('column-name', { required: true }),
+      newProjects,
+    });
   } catch (error) {
     core.setFailed(error.message);
   }
 }
 
-run()
+run();
