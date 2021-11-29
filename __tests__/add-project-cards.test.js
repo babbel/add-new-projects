@@ -15,7 +15,7 @@ test('adds all projects successfully', async () => {
     .reply(201);
 
   expect.assertions(1);
-  await githubHelper.addProjectCards({ columnIds: [123, 456] });
+  await githubHelper.addProjectCards([123, 456]);
   expect(nock.isDone()).toBe(true);
 });
 
@@ -26,5 +26,5 @@ test('rejects if at least one of the requests fail', () => {
     .post('/projects/columns/456/cards', { content_type: 'PullRequest', content_id: 987 })
     .reply(422, 'Wrong');
 
-  expect(githubHelper.addProjectCards({ columnIds: [123, 456] })).rejects.toThrow('Wrong');
+  return expect(githubHelper.addProjectCards([123, 456])).rejects.toThrow('Wrong');
 });

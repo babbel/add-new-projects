@@ -1,5 +1,5 @@
-exports.getNewProjects = (currentProjects, targetProjects) => {
+exports.getNewProjects = (currentProjects, targetProjectNames) => {
   const currentProjectNames = currentProjects.map((project) => project.node.project.name);
 
-  return targetProjects.filter((p) => !currentProjectNames.includes(p));
+  return targetProjectNames.filter((p) => !currentProjectNames.includes(p));
 };

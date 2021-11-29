@@ -4,20 +4,22 @@ exports.GithubHelper = class {
     this.context = context;
   }
 
-  async assignToProjects({ columnName, newProjects }) {
+  async assignToProjects({ columnName, newProjectNames }) {
     const allProjects = await this.fetchProjects();
     const columnIds = allProjects
       .map((project) => project.node) // remove top-level "node" attribute
-      .filter(({ name: projectName }) => newProjects.includes(projectName))
+      .filter(({ name: projectName }) => newProjectNames.includes(projectName))
       .map(({ columns: { edges: columns } }) => (
         columns.find((column) => column.node.name === columnName)
           .node
           .databaseId
       ));
-    await this.addProjectCards({ columnIds });
+    await this.addProjectCards(columnIds);
   }
 
-  async fetchProjects({ results, cursor } = { results: [] }) {
+  async fetchProjects(cursor) {
+    // A limit is required, and 10 or fewer columns per project board seems reasonable
+    const maxColumns = 10;
     const query = `
       query($cursor: String) {
         repository(owner: "${this.context.repo.owner}", name: "${this.context.repo.repo}") {
@@ -29,7 +31,7 @@ exports.GithubHelper = class {
             edges {
               node {
                 name
-                columns(first: 10) {
+                columns(first: ${maxColumns}) {
                   edges {
                     node {
                       databaseId
@@ -44,16 +46,18 @@ exports.GithubHelper = class {
       }
     `;
     const { repository: { projects } } = await this.client.graphql(query, { cursor });
+    const results = [];
     results.push(...projects.edges);
 
     if (projects.pageInfo.hasNextPage) {
-      await this.fetchProjects({ results, cursor: projects.pageInfo.endCursor });
+      const nextResults = await this.fetchProjects(projects.pageInfo.endCursor);
+      results.push(...nextResults);
     }
 
     return results;
   }
 
-  async addProjectCards({ columnIds }) {
+  async addProjectCards(columnIds) {
     for (const columnId of columnIds) {
       // eslint-disable-next-line no-await-in-loop
       await this.client.rest.projects.createCard({

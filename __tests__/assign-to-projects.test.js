@@ -13,7 +13,7 @@ test('fetches projects, filters them, and adds project cards for each', async ()
   const fetchProjects = jest.spyOn(githubHelper, 'fetchProjects').mockImplementation(() => page1.concat(page2));
   const addProjectCards = jest.spyOn(githubHelper, 'addProjectCards').mockImplementation(() => {});
 
-  await githubHelper.assignToProjects({ columnName: 'TODO', newProjects: ['client-info', 'home'] });
+  await githubHelper.assignToProjects({ columnName: 'TODO', newProjectNames: ['client-info', 'home'] });
   expect(fetchProjects).toHaveBeenCalled();
-  expect(addProjectCards).toHaveBeenCalledWith({ columnIds: [321, 1234] });
+  expect(addProjectCards).toHaveBeenCalledWith([321, 1234]);
 });
