@@ -14,7 +14,7 @@ exports.GithubHelper = class {
           .node
           .databaseId
       ));
-    await this.addProjectCards({ columnIds });
+    await this.addProjectCards(columnIds);
   }
 
   async fetchProjects(cursor) {
@@ -50,14 +50,14 @@ exports.GithubHelper = class {
     results.push(...projects.edges);
 
     if (projects.pageInfo.hasNextPage) {
-      const nextResults = await this.fetchProjects(cursor: projects.pageInfo.endCursor);
+      const nextResults = await this.fetchProjects(projects.pageInfo.endCursor);
       results.push(...nextResults);
     }
 
     return results;
   }
 
-  async addProjectCards({ columnIds }) {
+  async addProjectCards(columnIds) {
     for (const columnId of columnIds) {
       // eslint-disable-next-line no-await-in-loop
       await this.client.rest.projects.createCard({

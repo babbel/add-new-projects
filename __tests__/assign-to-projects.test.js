@@ -15,5 +15,5 @@ test('fetches projects, filters them, and adds project cards for each', async ()
 
   await githubHelper.assignToProjects({ columnName: 'TODO', newProjectNames: ['client-info', 'home'] });
   expect(fetchProjects).toHaveBeenCalled();
-  expect(addProjectCards).toHaveBeenCalledWith({ columnIds: [321, 1234] });
+  expect(addProjectCards).toHaveBeenCalledWith([321, 1234]);
 });
