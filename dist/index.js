@@ -81,7 +81,7 @@ exports.GithubHelper = class {
 /***/ 961:
 /***/ ((__unused_webpack_module, exports) => {
 
-exports.getNewProjects = (currentProjects, targetProjectNames) => {
+exports.getNewProjectNames = (currentProjects, targetProjectNames) => {
   const currentProjectNames = currentProjects.map((project) => project.node.project.name);
 
   return targetProjectNames.filter((p) => !currentProjectNames.includes(p));
@@ -8533,7 +8533,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
-const { getNewProjects } = __nccwpck_require__(961);
+const { getNewProjectNames } = __nccwpck_require__(961);
 const { GithubHelper } = __nccwpck_require__(9812);
 
 async function run() {
@@ -8543,14 +8543,14 @@ async function run() {
     const token = core.getInput('github-token', { required: true });
     const octokit = github.getOctokit(token);
 
-    const newProjects = getNewProjects(currentProjects, targetProjects);
+    const newProjectNames = getNewProjectNames(currentProjects, targetProjects);
     const githubHelper = new GithubHelper({
       client: octokit,
       context: github.context,
     });
     await githubHelper.assignToProjects({
       columnName: core.getInput('column-name', { required: true }),
-      newProjects,
+      newProjectNames,
     });
   } catch (error) {
     core.setFailed(error.message);
