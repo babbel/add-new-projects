@@ -6,11 +6,11 @@ const { GithubHelper } = require('./github-helper');
 async function run() {
   try {
     const currentProjects = JSON.parse(core.getInput('current-projects', { required: true }));
-    const targetProjects = JSON.parse(core.getInput('target-projects', { required: true }));
+    const targetProjectNames = JSON.parse(core.getInput('target-project-names', { required: true }));
     const token = core.getInput('github-token', { required: true });
     const octokit = github.getOctokit(token);
 
-    const newProjectNames = getNewProjectNames(currentProjects, targetProjects);
+    const newProjectNames = getNewProjectNames(currentProjects, targetProjectNames);
     const githubHelper = new GithubHelper({
       client: octokit,
       context: github.context,
