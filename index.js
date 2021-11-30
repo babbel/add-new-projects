@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-const { getNewProjects } = require('./new-projects');
+const { getNewProjectNames } = require('./new-projects');
 const { GithubHelper } = require('./github-helper');
 
 async function run() {
@@ -10,14 +10,14 @@ async function run() {
     const token = core.getInput('github-token', { required: true });
     const octokit = github.getOctokit(token);
 
-    const newProjects = getNewProjects(currentProjects, targetProjects);
+    const newProjectNames = getNewProjectNames(currentProjects, targetProjects);
     const githubHelper = new GithubHelper({
       client: octokit,
       context: github.context,
     });
     await githubHelper.assignToProjects({
       columnName: core.getInput('column-name', { required: true }),
-      newProjects,
+      newProjectNames,
     });
   } catch (error) {
     core.setFailed(error.message);
