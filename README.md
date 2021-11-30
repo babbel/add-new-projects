@@ -16,9 +16,9 @@ The workflow is as follows:
 
 ## Inputs
 
-| Name                    | Description                                                   | Type         | Required? | Default |
-|-------------------------|---------------------------------------------------------------|--------------|-----------|---------|
-| `column-name`           | Name of column in the project board to create card on         | `string`     | YES       | n/a     |
-| `current-projects`      | List of projects the given pull request is assigned to        | `JSON array` | YES       | n/a     |
-| `github-token`          | GitHub token used to create an authenticated client           | `string`     | NO        | `${{ github.token }}` |
-| `target-projects-names` | List of project names the given pull request should be assigned to | `JSON array` | YES       | n/a     |
+| Name                   | Description                                                   | Type         | Required? | Default |
+|------------------------|---------------------------------------------------------------|--------------|-----------|---------|
+| `column-name`          | Name of column in the project board to create card on         | `string`     | YES       | n/a     |
+| `current-projects`     | List of projects the given pull request is assigned to        | `JSON array` | YES       | n/a     |
+| `github-token`         | GitHub token used to create an authenticated client           | `string`     | NO        | `${{ github.token }}` |
+| `target-project-names` | List of project names the given pull request should be assigned to | `JSON array` | YES       | n/a     |
