@@ -1,7 +1,7 @@
 const { getNewProjectNames } = require('../new-projects');
 
-const fooproj = { node: { project: { name: 'foo' } } };
-const barproj = { node: { project: { name: 'bar' } } };
+const fooproj = { name: 'foo' };
+const barproj = { name: 'bar' };
 
 test('no new projects when current and target are both empty', async () => {
   expect(getNewProjectNames([], [])).toStrictEqual([]);
